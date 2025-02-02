@@ -223,11 +223,11 @@
 
             // Ambil latitude dan longitude dari response
 
-            const latitude = parseFloat(-0.9415944054614339);
-            const longitude = parseFloat(100.39947599533613);
+            //const latitude = parseFloat(-0.9415944054614339);
+            //const longitude = parseFloat(100.39947599533613);
 
-            //const latitude = parseFloat(data.field3);
-            //const longitude = parseFloat(data.field4);
+            const latitude = parseFloat(data.field3);
+            const longitude = parseFloat(data.field4);
 
             if (!isNaN(latitude) && !isNaN(longitude)) {
               displayMap(userLat, userLon, latitude, longitude);
