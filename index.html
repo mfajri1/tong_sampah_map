@@ -192,14 +192,14 @@
         const ID_CHANEL = "2813698";
         const apiUrl = `https://api.thingspeak.com/channels/${ID_CHANEL}/feeds/last.json?api_key=${API_KEY}&status=true`;
         //const deviceLocation = [-0.9114573020736946, 100.37256858206221];
-        const userLat;
-        const userLon;
+        let userLat = "";
+        let userLon = "";
         function getUserLocation() {
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(
                   (position) => {
-                      const userLat = position.coords.latitude;
-                      const userLon = position.coords.longitude;
+                      userLat = position.coords.latitude;
+                      userLon = position.coords.longitude;
       
                       console.log("Lokasi Pengguna:", userLat, userLon);
       
