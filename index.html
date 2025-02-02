@@ -192,14 +192,13 @@
         const ID_CHANEL = "2813698";
         const apiUrl = `https://api.thingspeak.com/channels/${ID_CHANEL}/feeds/last.json?api_key=${API_KEY}&status=true`;
         //const deviceLocation = [-0.9114573020736946, 100.37256858206221];
-        let userLat = "";
-        let userLon = "";
+     
         function getUserLocation() {
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(
                   (position) => {
-                      userLat = position.coords.latitude;
-                      userLon = position.coords.longitude;
+                      const userLat = position.coords.latitude;
+                      const userLon = position.coords.longitude;
       
                       console.log("Lokasi Pengguna:", userLat, userLon);
       
@@ -351,8 +350,12 @@
       // Jalankan fungsi untuk mendapatkan lokasi pengguna saat halaman dimuat
       getUserLocation();
 
-      setInterval(fetchData(userLat, userLon), 10000); // Panggil ulang API setiap 10 detik
+      //setInterval(fetchData(userLat, userLon), 10000); // Panggil ulang API setiap 10 detik
 
+        setInterval(function() {
+        // Kode yang ingin dijalankan setiap interval
+          window.location.reload();
+        }, 1000); // Interval dalam milidetik (1000 ms = 1 detik)
         // $('.gauge').each(function (index, item) {
         //     console.log(item);
         //   let params = {
