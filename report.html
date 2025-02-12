@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan Data</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .print-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Laporan Data Sensor</h2>
+    <p id="reportInfo"></p>
+    <button class="print-btn" onclick="window.print()">Cetak Laporan</button>
+    <table id="reportTable">
+      <tr>
+        <th>Waktu</th>
+        <th>Berat</th>
+        <th>Ultrasonik</th>
+        <th>Longitude</th>
+        <th>latitude</th>
+      </tr>
+    </table>
+
+    <script>
+      // Fungsi untuk mengambil parameter dari URL
+      function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          startDate: params.get("startDate"),
+          endDate: params.get("endDate"),
+          dataCount: params.get("dataCount"),
+        };
+      }
+
+      // Ambil parameter dari URL
+      const { startDate, endDate, dataCount } = getQueryParams();
+      document.getElementById(
+        "reportInfo"
+      ).innerHTML = `Tanggal Awal: ${startDate} | Tanggal Akhir: ${endDate} | Jumlah Data: ${dataCount}`;
+
+      // Panggil API untuk mengambil data
+      const API_KEY = "248MTKWS0LTPHAAI";
+      const ID_CHANNEL = "2813698";
+      const apiUrl = `https://api.thingspeak.com/channels/${ID_CHANNEL}/feeds.json?api_key=${API_KEY}&start=${startDate}&end=${endDate}&results=${dataCount}`;
+
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const table = document.getElementById("reportTable");
+
+          if (!data.feeds || data.feeds.length === 0) {
+            table.innerHTML +=
+              "<tr><td colspan='3'>Tidak ada data tersedia</td></tr>";
+          } else {
+            data.feeds.forEach((feed) => {
+              const originalDate = new Date(feed.created_at);
+              const formattedDate = originalDate.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              });
+              const row = `<tr>
+                            <td>${formattedDate}</td>
+                            <td>${feed.field1 || "-"}</td>
+                            <td>${feed.field2 || "-"}</td>
+                            <td>${feed.field3 || "-"}</td>
+                            <td>${feed.field4 || "-"}</td>
+                        </tr>`;
+              table.innerHTML += row;
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Gagal mengambil laporan:", error);
+          document.getElementById("reportInfo").innerHTML =
+            "Terjadi kesalahan saat mengambil data.";
+        });
+    </script>
+  </body>
+</html>
