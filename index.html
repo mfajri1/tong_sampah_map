@@ -343,7 +343,7 @@
       
           // Tambahkan marker lokasi dari ThingSpeak
           const thingSpeakMarker = L.marker([thingSpeakLat, thingSpeakLon]).addTo(map)
-              .bindPopup("Lokasi dari ThingSpeak").openPopup();
+              .bindPopup("Lokasi Tempat Sampah").openPopup();
       
           // Panggil fungsi untuk mendapatkan rute dari lokasi pengguna ke ThingSpeak
           getRoute([userLat, userLon], [thingSpeakLat, thingSpeakLon], map);
